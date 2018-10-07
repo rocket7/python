@@ -1,45 +1,3 @@
-#test
-hello="Hello"
-world="World"
-print(hello + world)
-
-myInt = 1
-print(myInt)
-
-myFloat = 1.1
-print(myFloat)
-
-myString = 'singleQuoteString'
-print(myString)
-
-myStringDbl = "doubleQuoteString"
-print(myStringDbl)
-
-myStringApos = "Adam's"
-print(myStringApos)
-
-one = 1
-two = 2
-three = one + two
-print(three)
-
-a, b = 3, 4
-print(a,b)
-
-# Exercise - Learnpython.org
-mystring = "hello"
-myfloat = 10.0
-myint = 20
-
-# testing code
-# NEED % BEFORE VAR
-if mystring == "hello":
-    print("String: %s" % mystring)
-if isinstance(myfloat, float) and myfloat == 10.0:
-    print("Float: %f" % myfloat)
-if isinstance(myint, int) and myint == 20:
-    print("Integer: %d" % myint)
-
 # LIST
 mylist = [1,2,3]
 #ERROR - No Index of 10
@@ -86,79 +44,6 @@ print(formatted_string % data)
 a = "Hello, World!"
 print(a[1])
 #Prints H
-
-x = int(1)   # x will be 1
-y = int(2.8) # y will be 2
-z = int("3") # z will be 3
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-x = str("s1") # x will be 's1'
-y = str(2)    # y will be '2'
-z = str(3.0)  # z will be '3.0'
-
-b = "Hello, World!"
-print(b[2:5]) # returns llo - first char is 0
-
-a = " Hello, World! "
-print(a.strip()) # returns "Hello, World!" (without leading or trailing spaces)
-
-a = "Hello, World!"
-print(len(a)) # returns 13
-
-a = "Hello, World!"
-print(a.upper()) # returns HELLO WORLD
-
-a = "Hello, World!"
-print(a.replace("H", "J")) # returns Jello World!
-
-a = "Hello, World!"
-print(a.split(",")) # returns ['Hello', ' World!']
-
-# INPUT NAME >>
-print("Enter your name:")
-x = input()
-print("Hello, " + x)
-
-# MODULUS - %
-divisor = 2
-product = divisor % 3
-print("Product of 3 modulus 2 = %d" % product)
-
-# EXPONENT - **
-exponent = 2
-print("Exponent 2 ** 2 = %d" % exponent)
-
-# FLOOR - //
-floor = 5.95
-print("Floor // = %d" % floor)
-
-# BITWISE OPERATORS
-# & AND
-x = 4 # NEED WHITESPACE AROUND EQUALS
-x = x & 3  # same as &=
-print(x)
-
-# | OR
-x = 4
-x = x | 3 # same as |=
-print(x)
-
-# ^ XOR
-x = 4
-x = x ^ 3 # same as ^=
-print(x)
-
-# ZERO RIGHT SHIFT
-x = 4
-x = x >> 3 # same as >>=
-print(x)
-
-# ZERO FILL LEFT SHIFT
-x = 4
-x = x << 3 # same as <<=
-print(x)
 
 #SAME MEMORY LOCATION TO COMPARE OBJECTS
 a = 1
@@ -330,6 +215,190 @@ print(p1.name)
 print(p1.age)
 
 # Note: The self parameter is a reference to the class itself, and is used to access variables that belongs to the class.
+
+
+#LISTS
+car_list = ["Mclaren P1","Porsche GT2 RS","Bugatti Divo","Nissan GTR","Lexus LFA","Ferrari 250 GTO"]
+car_list.append("Koenigsegg Regera")
+sorted_car_list = sorted(car_list)
+for i in car_list:
+    print("Dream cars: " + i)
+
+print(sorted_car_list)
+even = [2,4,6,8,0]
+odd = [1,3,5,7,9]
+numbers = even + odd    #This combines list?
+numbers2 = [even, odd]    #This creates 2 lists in numbers2 list
+print("Sort does not create/return new sorted object {}".format(numbers.sort()))
+#Sort method will sort existing object
+numbers.sort()
+print(numbers)
+sorted_numbers = sorted(numbers) #new object
+
+#DIFFERENT FROM JAVA
+if sorted_numbers == sorted(numbers):
+    print("The lists are equal")
+else:
+    print("The lists are NOT equal")
+
+
+##################
+# LIST CHALLENGE - QUIZ 3 - SECTION 7 UNIT 49
+flowers = [["rose", "red"],
+           ["snapdragon", "white"],
+           ["daisy", "white"],
+           ["lily", "yellow"]
+           ]
+
+second_flowers = flowers
+
+second_flowers[1] = ["lilac", 'purple']
+
+second_flowers[1][1] = 'pink'
+print(flowers)
+# PRINTS ['rose', 'red']['lilac', 'pink']..
+
+
+###########################
+# RANGE QUIZ 1
+numbers = range(13)
+
+new_range = numbers[1::2]
+for i in new_range:
+    print(i, end=', ')
+# PRINTS 1,3,5,7,9,11
+
+###########################
+# RANGE QUIZ 2
+even = range(0, 20, 2)  # ACTAUL NUMBERS ARE 0-19 in INCREMENTS OF 2
+#Go Backwards From 19 to 0
+for number in even[::-1]:
+    print(number, end=', ')
+# PRINTS 18,16,14,12,10,8,6,4,2,0
+
+
+#Creates Empty List
+list1 = []
+list2 = list() #contructor
+
+#ALL THE SEQUENCE TYPES BUILT INTO PYTHON ARE ITERABLE
+print(list("The lists are equal")) #Creates LIST with each CHAR a member
+
+#WHEN YOU COPY LIST YOU COPY OBJECT REFERENCE SO ANY CHANGE TO EITHER WILL UPDATE BOTH
+another_even = even #COPY OBJECT
+another_even.sort(reverse=True)
+print(even)
+#EVEN and ANOTHER_EVEN point to SAME List Object
+print("another_even is even - True if objects equal")
+print(another_even is even) #returns True if object equal
+print("\ranother_even == even - True if contents equal")
+print(another_even == even) #returns True contents equal
+
+
+garage = []
+garage.append(["Ferrari","Lamborgini", "Pagini"])
+garage.append(["Ducati","Moto Guzzi", "Bimota"])
+garage.append(["McLaren","Gumbert", "Ariel"])
+garage.append(["KTM","Mono", "Triumph"])
+print(garage)
+
+#Print List NOT containing KTM
+for vehicle in garage:
+    if not "KTM" in vehicle:
+        for model in vehicle:
+            print(model)
+
+
+string = "1234567890ABCDEFG"
+# for each char in string print
+my_iter = iter(string)
+print(my_iter) #Retrun string object mem address
+print(next(my_iter)) #returns 1
+print(next(my_iter)) #returns 2
+
+# https://www.udemy.com/python-the-complete-python-developer-course/learn/v4/t/lecture/3925118?start=0
+# Create a list of items (you may use either strings or numbers in the list),
+# then create an iterator using the iter() function.
+#
+# Use a for loop to loop "n" times, where n is the number of items in your list.
+# Each time round the loop, use next() on your list to print the next item.
+#
+# hint: use the len() function rather than counting the number of items in the list.
+
+i = 0
+for collection in garage:
+    new_iterator = iter(collection)
+    while i < len(collection):
+        print(next(new_iterator))
+        i += 1
+
+
+my_list_range = list(range(10)) # 0 to 10 exclusive of 10
+print(my_list_range) #prints 0,1,2,3,4,5,6,7,8,9
+
+# RANGE (begin, end, step)
+
+my_string = "abcdefghijklmnopqrstuvwxyz"
+print(my_string.index("e")) #prints 4
+print(my_string[4]) #prints eprint(next(new_iterator))
+
+
+# ASSIGN Several Variables at once
+a = b = c = d = 10
+print(c) #Prints 10
+
+a,b = 1,2 # RIGHT is evaluated first
+print(b)  #prints 2
+
+#TUPLES - Don't always require parens
+#TUPLES ARE IMUTABLE AND ALLOW MULTIPLE DATA TYPES
+NIN = ("Head like a hole", "NIN", 1994)
+#NIN[0] = "a" #results in error as tuples are immutable
+print(NIN)
+
+#NIN[0] = "a" #results in error as tuples are immutable
+#TypeError: 'tuple' object does not support item assignment
+
+#TUPLES ARE IMMUTABLE - BUT YOU CAN RE_CREATE THEM
+tuple1 = "Nirvana", "Smells like team Spirit", 1991 #NOTICE FOR PARENS
+#Takes values from original tuple and creates new tuple with same name
+tuple1 = tuple1[0], "Smells Like Teen Spirit", tuple1[2]
+print(tuple1)
+#Prints New Updated Tuple
+
+#UNPACKING TUPLE
+title, artist, year = NIN
+print(title)
+print(artist)
+print(year)
+
+
+##################
+#TUPLES QUIZ
+products = (('No. 5', 'perfume', 'Chanel'),
+            ('Inflallible', 'cosmetic', "L'Oreal"),
+            ('Poison', 'perfume', 'Dior'),
+            ('Double Wear', 'cosmetic', 'Estee Lauder'),
+            ('Wonder Wing', 'cosmetic', 'Rimmel London')
+            )
+# UNPACK TUPLE
+for product in products:
+    name, type, company = product
+    print(company)
+
+
+
+#LISTS CAN BE CHANGED
+metallica = ["Master of Puppets", "Metallica", 1984]
+metallica[0] = "a" #LISTS ARE NOT IMMUTABLE
+print(metallica)
+
+
+
+
+
+
+
 
 
 # TRY EXCEPT FINALLY

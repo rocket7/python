@@ -13,7 +13,7 @@ fruit["blueberry"] = "A delicious small blue berry"
 print(fruit) #prints everything including braces
 
 #Invalid Key
-print(fruit["invalid key"]) #returns error
+#print(fruit["invalid key"]) #returns error
 
 fruit.clear()
 print(fruit)
@@ -30,3 +30,8 @@ while True:
 bike = {"make": "Honda", "model": "250 dream", "colour": "red", "engine_size": 250}
 print(bike["engine_size"])
 print(bike["colour"])
+
+# https://docs.python.org/2.3/whatsnew/section-slices.html
+print("{1:>2} aaa".format(1,2,3)) # PRINTS 2
+print("{1:>2} aaa".format(2,1,3)) # PRINTS 1
+print("{1:>2} aaa".format(10,1,3)) # PRINTS 1
