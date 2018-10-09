@@ -72,7 +72,7 @@ class Album:
 
 class Artist:
     """
-    Basic class to store artist details
+    Class to represent artist details
 
     Attributes:
         name (str):  name of artist
@@ -98,6 +98,21 @@ class Artist:
          self.albums.append(album)
 
 
+def find_object(field, object_list):
+    """
+    Check object list to see if an object with 'name' attribute equals 'field' exist and return if true
+
+    :param field:
+    :param object_list:
+    :return:
+    """
+    for item in object_list:
+        if item.name == field:
+            return item
+    return None
+
+
+
 def load_data():
     new_album = None
     new_artist = None
@@ -108,7 +123,60 @@ def load_data():
             # data row should consist of artist, album, year, song title
             artist_field, album_field, year_field, song_field = tuple(line.strip('\n').split('\t'))
             year_field = int(year_field)
-            print(artist_field, album_field, year_field, song_field )
+            print("{}: {}: {}: {}".format(artist_field, album_field, year_field, song_field ))
+
+            if new_artist is None:
+                new_artist = Artist(artist_field)
+                artist_list.append(new_artist)
+            elif new_artist.name != artist_field:
+                # We have just read details for new artist
+                # Retrieve artist object if there is one
+                # otherwise create a new artist object and add to artist list
+                new_artist = find_object(artist_field, artist_list)
+                if new_artist is None:
+                    new_artist = Artist(artist_field)
+                    artist_list.append(new_artist)
+                new_album = None
+
+            if new_album is None:
+                new_album = Album(album_field, year_field,new_album)
+                new_artist.add_album(new_album)
+            elif new_album.name != album_field:
+                # we have just read a new album for current artist
+                # retrieve the album object if there is one
+                # otherwise create a new album object
+                new_album = find_object(album_field, new_artist.albums)
+                if new_album is None:
+                    new_album = Album(album_field, year_field, new_artist)
+                    new_artist.add_album(new_album)
+
+            # create a new song object
+            new_song = Song(song_field, new_artist)
+            new_album.add_song(new_song)
+
+        # # After reading the last line of a text file, we will have and artist and album
+        # # process them now
+        # if new_artist is not None:
+        #     if new_album is not None:
+        #         new_artist.add_album(new_album)
+        #     artist_list.append(new_artist)
+
+    return artist_list
+
+
+def checkfile_album_output(artist_list):
+
+    with open("checkfile.txt", "w") as checkfile:
+        for new_artist in artist_list:
+            for new_album in new_artist.albums:
+                for new_song in new_album.tracks:
+                    print("{0.name}\t{1.name}\t{1.year}\t{2.title}".format(new_artist, new_album, new_song), file=checkfile)
+
+
+
 
 if __name__ == '__main__':
-    load_data()
+    artists = load_data()
+    print("There are {} artists ".format(len(artists)))
+
+    checkfile_album_output(artists)
