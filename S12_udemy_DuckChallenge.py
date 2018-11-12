@@ -50,10 +50,41 @@ class Penguin(object):
         print("Are you havin' a laugh - I'm a penguin")
 
 
+class mallard(Duck):
+    pass
+
+
 def test_duck(duck):
     duck.walk()
     duck.swim()
     duck.quack()
+
+
+class Flock(object):
+
+    def __init__(self):
+        self.flock = []
+        #EMPTY LIST
+
+    def add_duck(self, duck: Duck) -> None:  #PARAM ANNOTATION WITH COLON TYPE AND RETURN VALUE
+       #if type(duck) is Duck:  #BAD PRACTICE
+        if isinstance(duck, Duck):
+            self.flock.append(duck)
+            #ADD NEW DUCK TO FLOCK
+
+    def migrate(self):
+        problem = None
+        for duck in self.flock:
+            try:
+                duck.fly()
+            except AttributeError as e:
+                problem = e
+            if problem:
+                raise #Error up call stack
+
+            #MAKE DUCKS FLY
+
+
 
 
 if __name__ == '__main__':
@@ -64,3 +95,7 @@ if __name__ == '__main__':
     print("*" * 24)
     percy = Penguin()
     test_duck(percy)
+
+
+
+
