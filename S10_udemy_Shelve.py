@@ -1,5 +1,5 @@
 # Shelves are read / write by default
-import shelve # writes dictionary to file
+import shelve # writes dictionary to binary file
 
 #creates motorcycle.db shelve file
 with shelve.open('motorcycles') as motorcycle:

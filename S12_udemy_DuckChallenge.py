@@ -38,6 +38,9 @@ class Duck(object):
 
 class Penguin(object):
 
+    def __init__(self):
+        self.fly = self.aviate()
+
     def walk(self):
         print("Waddle, waddle, penguids waddle too")
 
@@ -48,6 +51,9 @@ class Penguin(object):
 
     def quack(self):
         print("Are you havin' a laugh - I'm a penguin")
+
+    def aviate(self):
+        print("I won the lottery and bought a lear jet")
 
 
 class mallard(Duck):
@@ -60,6 +66,9 @@ def test_duck(duck):
     duck.quack()
 
 
+class Mallard(Duck):
+    pass
+
 class Flock(object):
 
     def __init__(self):
@@ -67,20 +76,26 @@ class Flock(object):
         #EMPTY LIST
 
     def add_duck(self, duck: Duck) -> None:  #PARAM ANNOTATION WITH COLON TYPE AND RETURN VALUE
-       #if type(duck) is Duck:  #BAD PRACTICE
-        if isinstance(duck, Duck):
+        #if type(duck) is Duck:  #BAD PRACTICE
+        #Use ISINSTANCE Instead
+        fly_method = getattr(duck, 'fly', None) #Checks Attribue DIsctionary to CHeck if Data Attribute Exists
+        #if isinstance(duck, Duck):
+        if callable(fly_method):
             self.flock.append(duck)
             #ADD NEW DUCK TO FLOCK
+        else:
+            raise TypeError("Cannot add duck, are you sure it's not a " + str(type(duck).__name__))
 
     def migrate(self):
         problem = None
         for duck in self.flock:
             try:
                 duck.fly()
+                raise AttributeError("Testing exception in migrate") # TODO remove before release
             except AttributeError as e:
                 problem = e
-            if problem:
-                raise #Error up call stack
+                if problem:
+                    raise #Error up call stack
 
             #MAKE DUCKS FLY
 
