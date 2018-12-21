@@ -156,26 +156,252 @@ for g in saved:
 # <!-- urllib may help. DON'T TRY ALL NOTHINGS, since it will never
 # end. 400 times is more than enough. -->
 #
-# chainsaw.jpg
+# >>> peak.html
 
-# 44827
-#
+# 66831
 #httplib, urllib, requests
 ########################################################################
 
 import requests
 
-r = requests.get("http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=12345")
-print(r.content) #returns 44827
-
-for pc4 in range(12345,12346):
-    pyurl = urllib.request.Request(url='http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=' + str(pc4))
-
+#r = requests.get("http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=")
+key = "66831"
+EOF = True
+while EOF == False:
     try:
-        with urllib.request.urlopen(pyurl) as f:
+        r = requests.get("http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=" + key)
+        # NEED TO STRIP OUT NON-NUMERIC CHARS
+        if r.status_code == 200:
+            k = re.search(r'[0-9].*', str(r.content)[-6:-1])
+            print(k.group(0))
+            key = str(k.group(0))
+            #key = str(int(k) / 2)
 
-            print("HTTP urllib status: {} and reason: {} and content: {}".format(f.status,f.reason))
+            print("Status Code: {} Response Content: {}".format(r.status_code, r.content))
+            #input()
+        else:
+            EOF = True
+            break
     except IOError:
         print("HTTP IO 404 Error")
+
+
+    #pyurl = urllib.request.Request(url='http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=' + str(pc4))
+
+
+####################################################
+# CHALLENGE 5
+# http://www.pythonchallenge.com/pc/def/peak.html
+# peak.html
+#
+#Picture of Hill or Peak with Quote - Pronounce It!
+#
+# Peak hell sounds familiar ? (pickle)
+# view-source:http://www.pythonchallenge.com/pc/def/banner.p
+#
+# python3 -m pickletools banner.p
+####################################################
+
+import pickle # object serialization - load everything in memory
+import pprint
+
+import array
+peak_str = ""
+peak_array = []
+peak_2array = [[],[]]
+peak_dict = {}
+x = 0
+
+# with open("banner.p", "r") as peak:
+#     for row in peak:
+#         with open("banner_dump.p", "wb") as pickle_line:
+#             pickle.dump(row, pickle_line, -1)
+#         #peak_array.append(row)
+
+#with open("banner_dump.p","rb") as pickle_file:
+with open("pychallenge5.txt","rb") as pickle_file:
+    try:
+        d = pickle.load(pickle_file)
+        pprint.pprint(d)
+        print(d)
+        #pickle.load(pickle_file, fix_imports=True)
+    except EOFError:
+        print(EOFError)
+
+print("*"*25)
+
+for row in d:
+    #print(row)
+    for item in row:
+        temp = str(item[0])*item[1]
+        print(temp, end='')
+    print("\n")
+
+# LOADS REQUIRES BYTES OBJECT
+# with open("banner2.p","rb") as pickle_file:
+#     data = pickle_file.read()
+#     pickle.loads(data, encoding="ASCII")
+
+#         pickle.loads(pickle_file)
+#
+#         pickle.loads(pickle_file, encoding="ASCII")
+#
+#     except IOError:
+#         pass
+
+#
+# with open("pychallenge5.txt", "r") as peak:
+#      for row in peak:
+#         if len(peak_dict) == 0:
+#             peak_dict[row] = 1
+#         elif row in peak_dict:
+#             peak_dict[row] = peak_dict[row] + 1
+#         else:
+#             peak_dict[row] = 1
+#
+# for key, value in sorted(peak_dict.items()):
+#     print("Key: {} Value: {}".format(key, value))
+
+         #
+         # if peak_array[].count() > 0:
+         #     while x < peak_array[].count():
+         #        if row == peak_array[x]val:
+         #     peak_array[[val]]++
+         #     break
+         # else:
+         #     peak_array[].append(row)
+         #
+         #     peak_dict.items()
+         # elif peak_dict.get(row) == False:
+         #     peak_dict.items()
+
+
+data1 = {'a': [1, 2.0, 3, 4+6j],
+         'b': ('string', u'Unicode string'),
+         'c': None}
+
+output = open('banner2.p', 'wb')
+# Pickle dictionary using protocol 0 - DEFAULT
+pickle.dump(data1, output)
+output.close()
+
+with open("banner2.p", "rb") as ff:
+    #ff = output.read()
+    l = pickle.load(ff)
+    pprint.pprint(l)
+    ff.close()
+
+print("************************************************")
+test = ["aaa"]
+test2 = [["aaa", 1],["bbb", 2]]
+test3 = [["aaa"],["bbb"]]
+print(test[0]) # Prints 1
+print(test2[1][1]) # Prints 2
+print(test3[1]) # Prints 2
+print("Length of test2: " + str(len(test2)))
+
+########################################################################################
+#
+# Challenge 6
+# http://www.pythonchallenge.com/pc/def/channel.html
+# <!-- <-- Zip -->
+# Now there are pairs
+#
+# https://docs.python.org/3.5/library/functions.html#zip
+# Zips iterables into tuple pairs
+# channel.zip
+########################################################################################
+
+#import zip #FUNCTION
+
+s1 = "<!-- <-- zip -->"
+s2 = "now there are pairs"
+s3 = "channel"
+a = zip(s1,s2) #Zips ITERABLE List
+
+print("*"*25)
+#
+# hint 1 - start from 90052
+# answer is inside the zip
+import zipfile
+
+zip_list = []
+zfile = "channel.zip"
+file = '90052' # 46145.txt - collect the comments.
+file_ext = '.txt'
+print(file + 'aaa\nbbb' + file_ext)
+x = 0
+
+#zf = zipfile.ZipFile(zfile, mode="r")
+#comments = []
+comments = ""
+with zipfile.ZipFile(zfile, "r") as myzip:
+    zlist = myzip.infolist()
+    print(len(zlist))
+    #print(myzip.comment) #ZipFile COmment
+    #print(myzip.infolist)
+    while x < 909:
+        #comments.append(str(myzip.getinfo(file + file_ext).comment)[2:-1])
+        comments += str(myzip.getinfo(file + file_ext).comment)[2:-1]
+        try:
+            with myzip.open(file + file_ext, 'r') as f:
+                next =f.read()
+                #comments.append(myzip.getinfo(f))
+                #zi = zipfile.ZipInfo(file + file_ext)
+                #comments.append(str(zi.comment(f))) # comments.append(myzip.getinfo(f))
+                #print(f.comment)
+                file = str(next[16:])[2:-1]
+                x += 1
+                print(x)
+                if file == 46145:
+                    break
+        except KeyError:
+            print(KeyError)
+
+#PRINT COMMENTS ON ZIPFILE
+myzip.close()
+#print(comments, end='\n')  # PRINTS WHOLE LINE AND NOT CARRIAGE RETURN
+for char in comments:
+    if char == '\\':
+        print('', end='\n')
+    elif char == 'n':
+        print('', end='')
+    else:
+        print(char, end='')
+
+
+
+
+# with zipfile.ZipInfo(zfile,"r") as myzip:
+#     #myzip.comment
+#     print(myzip.comment)
+#     myzip.close()
+
+################################################################################
+#
+# hockey.html
+# http://www.pythonchallenge.com/pc/def/oxygen.html
+# Challenge 7
+# Displays Greyscale Bar and Title of "smarty"
+# view-source:http://www.pythonchallenge.com/pc/def/oxygen.png
+# view-source:http://www.pythonchallenge.com/pc/def/oxygen.html
+#
+################################################################################
+from PIL import Image #cannot have PIL and pillow
+
+import requests
+from io import BytesIO
+from PIL import Image
+
+
+img = Image.open('oxygen.png')
+#exif_data = img.getexif()
+#print("Exif data =".format(exif_data))
+
+print("width " + str(img.width))
+print("height {}".format(img.height))
+print("getpixels {}".format(img.getpixel((0,47))))
+
+
 
 
