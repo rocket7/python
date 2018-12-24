@@ -398,9 +398,75 @@ img = Image.open('oxygen.png')
 #exif_data = img.getexif()
 #print("Exif data =".format(exif_data))
 
+width = img.width
+height = img.height
+block_size = 0
+center = height / 2
+rgb_array = []
+tuple = ()
+
 print("width " + str(img.width))
 print("height {}".format(img.height))
-print("getpixels {}".format(img.getpixel((0,47))))
+#print("getpixels {}".format(img.getpixel((0,47))))
+for x in range(0,width):
+    print("{} RGB : {}".format(x,img.getpixel((x,center))))
+    if len(rgb_array) == 0:
+        rgb_array.append(img.getpixel((x,center)))
+    elif rgb_array[len(rgb_array) - 1] == img.getpixel((x,center)):
+        continue
+    else:
+        rgb_array.append(img.getpixel((x,center)))
+
+for z in rgb_array:
+    print(chr(z[0]),end='')
+print("\n")
+print(chr(105),chr(110),chr(116),chr(101),chr(103),chr(114),chr(105),chr(116),chr(121))
+
+# flaw in program skip if number repeats - like 1
+
+#i n t e g r i t y
+
+
+#####################################################################
+# CHALLENGE #8
+# http://www.pythonchallenge.com/pc/def/integrity.html
+# view-source:http://www.pythonchallenge.com/pc/def/integrity.html
+# notinsect
+# shape = poly
+# title = working hard
+######################################################################
+
+import hashlib
+
+import PIL.ImageDraw as ImageDraw
+import PIL.Image as Image
+
+un = 'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
+pw ='BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08'
+
+image2 = Image.open("integrity.jpg", "r")
+
+coords="179,284,214,311,255,320,281,226,319,224,363,309,339,222,371,225,411,229,404,242,415,252,428,233,428,214,394,207,383,205,390,195,423,192,439,193,442,209,440,215,450,221,457,226,469,202,475,187,494,188,494,169,498,147,491,121,477,136,481,96,471,94,458,98,444,91,420,87,405,92,391,88,376,82,350,79,330,82,314,85,305,90,299,96,290,103,276,110,262,114,225,123,212,125,185,133,138,144,118,160,97,168,87,176,110,180,145,176,153,176,150,182,137,190,126,194,121,198,126,203,151,205,160,195,168,217,169,234,170,260,174,282"
+
+draw = ImageDraw.Draw(image2)
+coords_list = coords.split(',')
+print(coords_list[0])
+count = 0
+coord_list2 = []
+temp = ''
+for c in coords_list:
+    if count == 0:
+        temp = c
+    elif count % 2 != 0:
+        coord_list2.append((int(temp),int(c)))
+        #print(coord_list2)
+    else:
+        temp = c
+    count += 1
+
+points = (coord_list2)
+draw.polygon((points), fill=200)
+image2.show()
 
 
 
