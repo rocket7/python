@@ -90,6 +90,7 @@ for x in thislist:
 #TUPLE - Ordered and UNCHANGABLE
 thistuple = ("apple", "banana", "cherry")
 print(thistuple)
+print(thistuple(2))
 # prints: ("apple", "banana", "cherry")
 #results in error
 #thistuple[1] = "blackcurrant"
