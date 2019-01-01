@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import sys
+
 """
 Create a Tic Tac Toe Program
 https://github.com/Pierian-Data/Complete-Python-3-Bootcamp/tree/master/04-Milestone%20Project%20-%201
@@ -74,64 +76,73 @@ class TicTacToe():
 
         while True:
             select_block = input("Please Select Square: ")
-            if int(select_block) in range(0,10):
-                if int(select_block) in range(7,10):
-                    if int(select_block) == 7:
-                        if board_values[0][0] == ' ':
-                            board_values[0][0] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
-                    elif int(select_block) == 8:
-                        if board_values[0][1] == ' ':
-                            board_values[0][1] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
+            if select_block != 'q' and int(select_block) in range(0,10) and self.move_count < 9:
+                if int(select_block) == 7:
+                    if board_values[0][0] == ' ':
+                        board_values[0][0] = self.current_player
+                        self.move_count += 1
+                        break
                     else:
-                        if board_values[0][2] == ' ':
-                            board_values[0][2] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
-                elif int(select_block) in range(4,7):
-                    if select_block == 4:
-                        if board_values[1][0] == ' ':
-                            board_values[1][0] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
-                    elif int(select_block) == 5:
-                        if board_values[1][1] == ' ':
-                            board_values[1][1] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 8:
+                    if board_values[0][1] == ' ':
+                        board_values[0][1] = self.current_player
+                        self.move_count += 1
+                        break
                     else:
-                        if board_values[1][2] == ' ':
-                            board_values[1][2] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
-                else:
-                    if int(select_block) == 1:
-                        if board_values[2][0] == ' ':
-                            board_values[2][0] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
-                    elif int(select_block) == 2:
-                        if board_values[2][1] == ' ':
-                            board_values[2][1] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 9:
+                    if board_values[0][2] == ' ':
+                        board_values[0][2] = self.current_player
+                        self.move_count += 1
+                        break
                     else:
-                        if board_values[2][2] == ' ':
-                            board_values[2][2] = self.current_player
-                            break
-                        else:
-                            print("This block already has a value - please choose another square")
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 4:
+                    if board_values[1][0] == ' ':
+                        board_values[1][0] = self.current_player
+                        self.move_count += 1
+                        break
+                    else:
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 5:
+                    if board_values[1][1] == ' ':
+                        board_values[1][1] = self.current_player
+                        self.move_count += 1
+                        break
+                    else:
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 6:
+                    if board_values[1][2] == ' ':
+                        board_values[1][2] = self.current_player
+                        self.move_count += 1
+                        break
+                    else:
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 1:
+                    if board_values[2][0] == ' ':
+                        board_values[2][0] = self.current_player
+                        self.move_count += 1
+                        break
+                    else:
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 2:
+                    if board_values[2][1] == ' ':
+                        board_values[2][1] = self.current_player
+                        self.move_count += 1
+                        break
+                    else:
+                        print("This block already has a value - please choose another square")
+                elif int(select_block) == 3:
+                    if board_values[2][2] == ' ':
+                        board_values[2][2] = self.current_player
+                        self.move_count += 1
+                        break
+                    else:
+                        print("This block already has a value - please choose another square")
+            elif select_block == 'q':
+                quit()
+                #sys.exit()
             else:
                 break
 
@@ -152,7 +163,6 @@ class TicTacToe():
             elif board_values[self.rows][x] == 'X' and board_values[self.rows + 1][x] == 'X' and board_values[self.rows + 2][x] == 'X':
                 print("Congratulations Player {}, You have Won TicTacToe!".format(self.current_player))
                 return True
-
             elif board_values[x][x] == 'O' and board_values[x + 1][x + 1] == 'O' and board_values[x + 2][x + 2] == 'O':
                 print("Congratulations Player {}, You have Won TicTacToe!".format(self.current_player))
                 return True
