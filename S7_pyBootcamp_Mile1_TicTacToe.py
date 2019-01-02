@@ -14,8 +14,11 @@ STep 4 - Display Board with X and O marks
 Step 5 -
 
 """
-
+#List of 3 Lists
 board_values = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
+
+#Single List of 9 Values
+board_values2 = [' ',' ',' ',' ',' ',' ',' ',' ',' ']
 
 
 class TicTacToe():
@@ -32,6 +35,8 @@ class TicTacToe():
     '''
 
     def __init__(self, player='X', position=0):
+        self.player1_marker = ''
+        self.player2_marker = ''
         self.current_player = player
         self.position = position
         self.move_count = 0
@@ -55,10 +60,19 @@ class TicTacToe():
 
 
     def set_player(self):
+        #while not (select_player == 'X' or select_player == 'O'):
         while True:
             select_player = input("Please select player to start [X or O]: ")
-            if select_player == 'X' or select_player == 'O':
+            if select_player == 'X':
                 self.current_player = select_player
+                self.player1_marker = select_player
+                self.player2_marker = 'O'
+                print(self.current_player) # has value entered
+                break
+            elif select_player == 'O':
+                self.current_player = select_player
+                self.player1_marker = select_player
+                self.player2_marker = 'X'
                 print(self.current_player) # has value entered
                 break
 
