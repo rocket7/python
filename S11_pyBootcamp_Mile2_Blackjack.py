@@ -39,6 +39,14 @@ class Deck():
     def shuffle_deck(self):
         pass
 
+    def display_hand(self, player, card_hand):
+        total = 0
+        print(f"{player} has following hand:")
+        for x in card_hand:
+            print(f"\t {x[0]} of {x[1]}")
+            total += x[2]
+        print(f"For a total hand count of {total}")
+
 
     def create_deck(self):
         # Create Card Deck as List of Tuples
@@ -57,17 +65,25 @@ class Deck():
         for x in card_hand:
             if x[0] == 'Ace':
                 value = input("Please select value for Ace (1 or 11): ")
-                hand_count += value
+                if value == 1 or value == 11:
+                    hand_count += int(value)
+                else:
+                    print("Error entering value for Ace")
             else:
                 hand_count += x[2]
+        return hand_count
 
 
     def deal_hand(self, cards):
-        for card in range(0,cards):
-            random.shuffle(self.deck)
-            hand =  self.deck.pop(card)
+        random.shuffle(self.deck)
+        c = 0
+        hand = []
+        while c < cards:
+            hand.append(self.deck.pop(c))
+            print(f"hand: {hand}")
+            c += 1
         return hand
-        #print(player1_hand)
+
 
 
 
@@ -94,7 +110,8 @@ if __name__ == '__main__':
     b.create_deck()
     player1_hand = b.deal_hand(2)
     print(b.count_hand(player1_hand))
+    b.display_hand("player1",player1_hand)
     dealer_hand = b.deal_hand(2)
-    print(b.count_hand(dealer_hand))
+    #print(b.count_hand(dealer_hand))
     print(len(b.deck))
 
