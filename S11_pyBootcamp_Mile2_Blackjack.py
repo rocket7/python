@@ -27,6 +27,26 @@ player2_hand = []
 dealer_hand = []
 
 
+class Account():
+
+    def __init__(self, amount):
+        self.balance = amount
+
+
+    def get_balance(self):
+        pass
+
+    def deposit(self, amount):
+        return self.balance
+
+
+    def withdrawl(self, amount):
+
+
+
+
+
+
 class Deck():
 
     def __init__(self, deck_count=1):
