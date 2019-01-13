@@ -65,10 +65,6 @@ class Account():
             self.balance -= amount
 
 
-
-
-
-
 class Deck():
 
     def __init__(self, deck_count=1):
@@ -136,99 +132,66 @@ class Blackjack(Deck):
 
     def __init__(self):
         Deck.__init__(self) #NO COLON AND NO INDENT FOR PASS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        pass
-
-
-if __name__ == '__main__':
-
-
-
-    while True:
-        intro = input("Would you like to play a game of blackjack? [y|n]")
-        if intro == 'y':
-            break
-        elif intro == 'n':
-            sys.exit()
-        else:
-            print("Invalid selection...")
-
-
-    # List of Player Objects
-    players = []
-
-    while True:
-        player_count = input("How many players?")
-        for x in range(0,int(player_count)):
-            players.append(Player("Player" + str(x + 1),))
-        break
-
-
-    # Add 100 to each players account to initialize wallet/account balance
-    for x in players:
-        x.wallet = Account(100)
-
-    print(f"Player Name: {players[0].name}")
-    print(f"Player Balance: {players[0].wallet.balance}")
 
 
     # Move to Blackjack Class
     # Deal hand
-    while True:
-        #Create Deck
-        b = Blackjack()
-        b.create_deck()
-        bet_amount = input("New Deal - Please place your bets..")
-        for x in range(0,int(player_count)):
-            print("Player{} please place your bet: ".format(x + 1))
-            players[x].wallet.withdrawl(int(bet_amount))
-
-        dealer_acct = Account(0)
-        dealer = Player("Dealer")
-        dealer.cards = b.deal_hand(2)
-
-        #Deal Player Cards
+    def deal_blackjack_hand(self):
         while True:
+            b.create_deck()
+            bet_amount = input("New Deal - Please place your bets..")
             for x in range(0,int(player_count)):
-                players[x].cards = b.deal_hand(2)
-            break
+                print("Player{} please place your bet: ".format(x + 1))
+                players[x].wallet.withdrawl(int(bet_amount))
 
-        while True:
-            print("Dealer card displayed is {}".format(dealer.cards[0]))
-            for x in range(0,int(player_count)):
-                while True:
-                    print("Player{} -----------------".format(x + 1))
-                    print("\tCards: {}".format(players[x].cards))
-                    print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
-                    hit = input("Would you like hit? [y|n]")
-                    if hit == 'y':
-                        players[x].cards.append(b.deck.pop())
+            dealer_acct = Account(0)
+            dealer = Player("Dealer")
+            dealer.cards = b.deal_hand(2)
+
+            #Deal Player Cards
+            while True:
+                for x in range(0,int(player_count)):
+                    players[x].cards = b.deal_hand(2)
+                break
+
+            while True:
+                print("Dealer card displayed is {}".format(dealer.cards[0]))
+                for x in range(0,int(player_count)):
+                    while True:
                         print("Player{} -----------------".format(x + 1))
-                        print("\tHit Player{} with Card{}".format(x + 1, players[x].cards[-1][0]))
+                        print("\tCards: {}".format(players[x].cards))
                         print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
-                        if int(b.count_hand(players[x].cards) > 21):
+                        hit = input("Would you like hit? [y|n]")
+                        if hit == 'y':
+                            players[x].cards.append(b.deck.pop())
                             print("Player{} -----------------".format(x + 1))
-                            print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
-                            break
-                        elif int(b.count_hand(players[x].cards) == 21):
-                            print("Player{} -----------------".format(x + 1))
-                            print("\tPlayer{} has Blackjack!!".format(x + 1))
-                            break
+                            print("\tHit Player{} with Card{}".format(x + 1, players[x].cards[-1][0]))
+                            print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
+                            if int(b.count_hand(players[x].cards) > 21):
+                                print("Player{} -----------------".format(x + 1))
+                                print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
+                                break
+                            elif int(b.count_hand(players[x].cards) == 21):
+                                print("Player{} -----------------".format(x + 1))
+                                print("\tPlayer{} has Blackjack!!".format(x + 1))
+                                break
+                            else:
+                                pass
                         else:
-                            pass
-                    else:
-                        print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
-                        if int(b.count_hand(dealer.cards) > 21):
-                            print("Player{} -----------------".format(x + 1))
-                            print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
-                            break
-                        elif int(b.count_hand(players[x].cards) == 21):
-                            print("Player{} -----------------".format(x + 1))
-                            print("\tPlayer{} has Blackjack!!".format(x + 1))
-                            break
-                        else:
-                            break
-            break
+                            print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
+                            if int(b.count_hand(dealer.cards) > 21):
+                                print("Player{} -----------------".format(x + 1))
+                                print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
+                                break
+                            elif int(b.count_hand(players[x].cards) == 21):
+                                print("Player{} -----------------".format(x + 1))
+                                print("\tPlayer{} has Blackjack!!".format(x + 1))
+                                break
+                            else:
+                                break
+                break
 
+    def dealer_hand_count(self):
         print("Dealer -----------------")
         print("\tCards: {}".format(players[x].cards))
         print("\tThe dealer card count is {}".format(b.count_hand(dealer.cards)))
@@ -259,7 +222,7 @@ if __name__ == '__main__':
                 else:
                     break
 
-
+    def winning_hand(self):
         for x in range(0,int(player_count)):
             if b.count_hand(players[x].cards) == 21 and b.count_hand(dealer.cards) == 21:
                 print("-------------------------")
@@ -279,5 +242,49 @@ if __name__ == '__main__':
                 print("Push - Both Dealer and Player{} have same hand!!".format(x + 1))
                 players[x].wins += 1
 
+
+
+
+
+if __name__ == '__main__':
+
+    # List of Player Objects
+    players = []
+    dealer = []
+
+    #Create Deck
+    b = Blackjack()
+
+    b.deal_blackjack_hand()
+
+    b.dealer_hand_count()
+
+    b.winning_hand()
+
+    while True:
+        intro = input("Would you like to play a game of blackjack? [y|n]")
+        if intro == 'y':
+            break
+        elif intro == 'n':
+            sys.exit()
+        else:
+            print("Invalid selection...")
+
+
+
+
+    while True:
+        player_count = input("How many players?")
+        for x in range(0,int(player_count)):
+            players.append(Player("Player" + str(x + 1),))
+        break
+
+
+    # Add 100 to each players account to initialize wallet/account balance
+    for x in players:
+        x.wallet = Account(100)
+
+    print(f"Player Name: {players[0].name}")
+    print(f"Player Balance: {players[0].wallet.balance}")
 
 
