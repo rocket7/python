@@ -5,6 +5,8 @@
 
 import random
 import sys
+#import pyforms
+import tkinter
 
 """
 In this milestone project you will be creating a Complete BlackJack Card Game in Python.
@@ -32,6 +34,8 @@ class Player():
         self.cards = []
         self.wallet = None
         self.wins = 0
+        self.losses = 0
+        self.push = 0
         self.hands = 0
         self.bet = 0
 
@@ -137,9 +141,7 @@ class Blackjack(Deck):
 
 if __name__ == '__main__':
 
-    #Create Deck
-    b = Blackjack()
-    b.create_deck()
+
 
     while True:
         intro = input("Would you like to play a game of blackjack? [y|n]")
@@ -161,94 +163,121 @@ if __name__ == '__main__':
         break
 
 
-    # Add 100 to each players account
+    # Add 100 to each players account to initialize wallet/account balance
     for x in players:
         x.wallet = Account(100)
 
-    print(f"Players: {players[0].name}")
+    print(f"Player Name: {players[0].name}")
+    print(f"Player Balance: {players[0].wallet.balance}")
 
 
+    # Move to Blackjack Class
+    # Deal hand
     while True:
-        bet_amount = input("Please place your bets..")
+        #Create Deck
+        b = Blackjack()
+        b.create_deck()
+        bet_amount = input("New Deal - Please place your bets..")
         for x in range(0,int(player_count)):
             print("Player{} please place your bet: ".format(x + 1))
             players[x].wallet.withdrawl(int(bet_amount))
-        break
 
+        dealer_acct = Account(0)
+        dealer = Player("Dealer")
+        dealer.cards = b.deal_hand(2)
 
-    dealer_acct = Account(100)
-    dealer = Player("Dealer")
-    dealer.cards = b.deal_hand(2)
+        #Deal Player Cards
+        while True:
+            for x in range(0,int(player_count)):
+                players[x].cards = b.deal_hand(2)
+            break
 
-    while True:
-        for x in range(0,int(player_count)):
-            players[x].cards = b.deal_hand(2)
-        break
-
-
-    while True:
-        print("Dealer card displayed is {}".format(dealer.cards[0]))
-        for x in range(0,int(player_count)):
-            print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
-            while True:
-                hit = input("Would you like an additional card [y|n]...")
-                if hit == 'y' or hit == 'Y':
-                    players[x].cards.append(b.deck.pop())
-                    print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
-                    if int(b.count_hand(players[x].cards) > 21):
-                        print("Player{} has exceeded 21")
-                        break
-                    elif int(b.count_hand(players[x].cards) == 21):
-                        print("Player{} has Blackjack!!")
-                        break
+        while True:
+            print("Dealer card displayed is {}".format(dealer.cards[0]))
+            for x in range(0,int(player_count)):
+                while True:
+                    print("Player{} -----------------".format(x + 1))
+                    print("\tCards: {}".format(players[x].cards))
+                    print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
+                    hit = input("Would you like hit? [y|n]")
+                    if hit == 'y':
+                        players[x].cards.append(b.deck.pop())
+                        print("Player{} -----------------".format(x + 1))
+                        print("\tHit Player{} with Card{}".format(x + 1, players[x].cards[-1][0]))
+                        print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
+                        if int(b.count_hand(players[x].cards) > 21):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
+                            break
+                        elif int(b.count_hand(players[x].cards) == 21):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tPlayer{} has Blackjack!!".format(x + 1))
+                            break
+                        else:
+                            pass
                     else:
-                        pass
-                else:
-                    print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
-                    if int(b.count_hand(dealer.cards) > 21):
-                        print("Player{} has exceeded 21".format(x + 1))
-                        break
-                    elif int(b.count_hand(player[x].cards) == 21):
-                        print("Player{} has Blackjack!!".format(x + 1))
-                        break
+                        print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
+                        if int(b.count_hand(dealer.cards) > 21):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
+                            break
+                        elif int(b.count_hand(players[x].cards) == 21):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tPlayer{} has Blackjack!!".format(x + 1))
+                            break
+                        else:
+                            break
+            break
 
-
-        print("The dealer card count is {}".format(b.count_hand(dealer.cards)))
+        print("Dealer -----------------")
+        print("\tCards: {}".format(players[x].cards))
+        print("\tThe dealer card count is {}".format(b.count_hand(dealer.cards)))
         while True:
             if int(b.count_hand(dealer.cards)) < 17:
                 dealer.cards.append(b.deck.pop())
-                print("Dealer card count is {}".format(b.count_hand(dealer.cards)))
+                print("Dealer -----------------")
+                print("\tCards: {}".format(players[x].cards))
+                print("\tDealer card count is {}".format(b.count_hand(dealer.cards)))
                 if int(b.count_hand(dealer.cards) > 21):
-                    print("Dealer has exceeded 21")
+                    print("Dealer has Bust, hand exceeds 21")
                     break
                 elif int(b.count_hand(dealer.cards) == 21):
                     print("Dealer has Blackjack!!")
                     break
                 else:
-                    pass
+                    break
             else:
-                print("Dealer card count is {}".format(b.count_hand(dealer.cards)))
+                print("Dealer -----------------")
+                print("\tCards: {}".format(players[x].cards))
+                print("\tDealer card count is {}".format(b.count_hand(dealer.cards)))
                 if int(b.count_hand(dealer.cards) > 21):
-                    print("Dealer has exceeded 21")
+                    print("Dealer has Bust, hand exceeds 21")
                     break
                 elif int(b.count_hand(dealer.cards) == 21):
                     print("Dealer has Blackjack!!")
                     break
-
-#print("Dealer card count is {}".format(b.count_hand(dealer.cards)))
-            break
-
+                else:
+                    break
 
 
+        for x in range(0,int(player_count)):
+            if b.count_hand(players[x].cards) == 21 and b.count_hand(dealer.cards) == 21:
+                print("-------------------------")
+                print("Push - Both Dealer and Player{} have Blackjack!!".format(x + 1))
+                players[x].push += 1
+            elif b.count_hand(players[x].cards) == 21 and b.count_hand(dealer.cards) < 21:
+                print("Player{} has Blackjack and is Winner!!".format(x + 1))
+                players[x].wins += 1
+                break
+            elif b.count_hand(players[x].cards) > b.count_hand(dealer.cards):
+                print("Player{} has better hand and is Winner!!".format(x + 1))
+                players[x].wins += 1
+            elif b.count_hand(players[x].cards) < b.count_hand(dealer.cards):
+                print("Dealer has better hand that Player{} and is Winner!!".format(x + 1))
+                players[x].wins += 1
+            elif b.count_hand(players[x].cards) == b.count_hand(dealer.cards):
+                print("Push - Both Dealer and Player{} have same hand!!".format(x + 1))
+                players[x].wins += 1
 
-    #print("P1")
-    #print(p1.cards)
-    #print(b.count_hand(p1.cards))
-    #print(p1.wallet.balance)
 
-    #print(b.count_hand(player1_hand))
-    #b.display_hand("player1",player1_hand)
-    #dealer_hand = b.deal_hand(2)
-    #print(b.count_hand(dealer_hand))
-    #print(len(b.deck))
 
