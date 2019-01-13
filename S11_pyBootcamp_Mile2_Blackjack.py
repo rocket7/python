@@ -75,7 +75,8 @@ class Deck():
         self.card_value = [2,3,4,5,6,7,8,9,10,10,10,10,11]
 
     def shuffle_deck(self):
-        pass
+        random.shuffle(self.deck)
+
 
     def display_hand(self, player_name, card_hand):
         total = 0
@@ -134,14 +135,6 @@ class Blackjack(Deck):
         pass
 
 
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
 
     #Create Deck
@@ -194,9 +187,56 @@ if __name__ == '__main__':
 
 
     while True:
+        print("Dealer card displayed is {}".format(dealer.cards[0]))
         for x in range(0,int(player_count)):
             print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
-        break
+            while True:
+                hit = input("Would you like an additional card [y|n]...")
+                if hit == 'y' or hit == 'Y':
+                    players[x].cards.append(b.deck.pop())
+                    print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
+                    if int(b.count_hand(players[x].cards) > 21):
+                        print("Player{} has exceeded 21")
+                        break
+                    elif int(b.count_hand(players[x].cards) == 21):
+                        print("Player{} has Blackjack!!")
+                        break
+                    else:
+                        pass
+                else:
+                    print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
+                    if int(b.count_hand(dealer.cards) > 21):
+                        print("Player{} has exceeded 21".format(x + 1))
+                        break
+                    elif int(b.count_hand(player[x].cards) == 21):
+                        print("Player{} has Blackjack!!".format(x + 1))
+                        break
+
+
+        print("The dealer card count is {}".format(b.count_hand(dealer.cards)))
+        while True:
+            if int(b.count_hand(dealer.cards)) < 17:
+                dealer.cards.append(b.deck.pop())
+                print("Dealer card count is {}".format(b.count_hand(dealer.cards)))
+                if int(b.count_hand(dealer.cards) > 21):
+                    print("Dealer has exceeded 21")
+                    break
+                elif int(b.count_hand(dealer.cards) == 21):
+                    print("Dealer has Blackjack!!")
+                    break
+                else:
+                    pass
+            else:
+                print("Dealer card count is {}".format(b.count_hand(dealer.cards)))
+                if int(b.count_hand(dealer.cards) > 21):
+                    print("Dealer has exceeded 21")
+                    break
+                elif int(b.count_hand(dealer.cards) == 21):
+                    print("Dealer has Blackjack!!")
+                    break
+
+#print("Dealer card count is {}".format(b.count_hand(dealer.cards)))
+            break
 
 
 
