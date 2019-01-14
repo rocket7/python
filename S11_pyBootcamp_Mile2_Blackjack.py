@@ -104,7 +104,7 @@ class Deck():
         for x in card_hand:
             if x[0] == 'Ace':
                 value = input("Please select value for Ace (1 or 11): ")
-                if value == 1 or value == 11:
+                if value == '1' or value == '11':
                     hand_count += int(value)
                 else:
                     print("Error entering value for Ace")
@@ -255,34 +255,23 @@ if __name__ == '__main__':
     #Create Deck
     b = Blackjack()
 
-    b.deal_blackjack_hand()
-
-    b.dealer_hand_count()
-
-    b.winning_hand()
-
     while True:
         intro = input("Would you like to play a game of blackjack? [y|n]")
         if intro == 'y':
-            break
+            while True:
+                player_count = input("How many players?")
+                for x in range(0,int(player_count)):
+                    players.append(Player("Player" + str(x + 1)))
+                    players[x].wallet = Account(100)
+                break
+            b.deal_blackjack_hand()
+            b.dealer_hand_count()
+            b.winning_hand()
         elif intro == 'n':
             sys.exit()
         else:
             print("Invalid selection...")
 
-
-
-
-    while True:
-        player_count = input("How many players?")
-        for x in range(0,int(player_count)):
-            players.append(Player("Player" + str(x + 1),))
-        break
-
-
-    # Add 100 to each players account to initialize wallet/account balance
-    for x in players:
-        x.wallet = Account(100)
 
     print(f"Player Name: {players[0].name}")
     print(f"Player Balance: {players[0].wallet.balance}")
