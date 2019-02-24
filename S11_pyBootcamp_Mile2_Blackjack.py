@@ -6,7 +6,7 @@
 import random
 import sys
 #import pyforms
-import tkinter
+#import tkinter
 
 """
 In this milestone project you will be creating a Complete BlackJack Card Game in Python.
@@ -32,23 +32,26 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.cards = []
+        self.hand = [0][0]
         self.wallet = None
         self.wins = 0
         self.losses = 0
-        self.push = 0
-        self.hands = 0
+        self.total = 0
         self.bet = 0
+        self.hand_count = 0
 
 
     def bet(self, bet_amount):
         self.wallet.withdrawl(bet_amount)
+
+    def win(self, bet_amount):
+        self.wallet.deposit(bet_amount)
 
 
 class Account():
 
     def __init__(self, amount):
         self.balance = amount
-
 
 
     def get_balance(self):
@@ -70,8 +73,8 @@ class Deck():
     def __init__(self, deck_count=1):
         self.deck_count = deck_count
         self.deck = []
-        self.suits = ['Spades', 'Hearts', 'Diamonds', 'Clubs']
         self.card_number = ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace']
+        self.suits = ['Spades', 'Hearts', 'Diamonds', 'Clubs']
         self.card_value = [2,3,4,5,6,7,8,9,10,10,10,10,11]
 
     def shuffle_deck(self):
@@ -119,7 +122,7 @@ class Deck():
         hand = []
         while c < cards:
             hand.append(self.deck.pop(c))
-            print(f"hand: {hand}")
+            #print(f"deal_hand: {hand}")
             c += 1
         return hand
 
@@ -134,62 +137,74 @@ class Blackjack(Deck):
         Deck.__init__(self) #NO COLON AND NO INDENT FOR PASS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
+    def shuffle_deck(self):
+        b.create_deck()
+
+
+    def place_bet(self, player):
+        bet_amount = input("Place Bet - Please place your bets..")
+        print("{} has bet: ${}".format(player, bet_amount))
+        players[x].wallet.withdrawl(int(bet_amount))
+        #dealer_acct = Account(0)
+
+
+
     # Move to Blackjack Class
     # Deal hand
-    def deal_blackjack_hand(self):
-        while True:
-            b.create_deck()
-            bet_amount = input("New Deal - Please place your bets..")
-            for x in range(0,int(player_count)):
-                print("Player{} please place your bet: ".format(x + 1))
-                players[x].wallet.withdrawl(int(bet_amount))
-
-            dealer_acct = Account(0)
-            dealer = Player("Dealer")
+    def deal_blackjack_hand(self, player):
+        #Deal Player Cards
+        if player == "Dealer":
             dealer.cards = b.deal_hand(2)
+        else:
+            players[x].cards = b.deal_hand(2)
 
-            #Deal Player Cards
-            while True:
-                for x in range(0,int(player_count)):
-                    players[x].cards = b.deal_hand(2)
-                break
 
-            while True:
-                print("Dealer card displayed is {}".format(dealer.cards[0]))
-                for x in range(0,int(player_count)):
-                    while True:
+    # Evaluate hand
+    def player_hand_count(self):
+
+        while True:
+            print("Dealer card displayed is {}".format(dealer.cards[0]))
+            for x in range(0,int(player_count)):
+                while True:
+                    print("Player{} -----------------".format(x + 1))
+                    print("\tCards: {}".format(players[x].cards))
+                    print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
+                    hit = input("Would you like hit? [y|n]")
+                    if hit == 'y':
+                        players[x].cards.append(b.deck.pop())
                         print("Player{} -----------------".format(x + 1))
-                        print("\tCards: {}".format(players[x].cards))
+                        print("\tHit Player{} with Card {}".format(x + 1, players[x].cards[-1][0]))
                         print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
-                        hit = input("Would you like hit? [y|n]")
-                        if hit == 'y':
-                            players[x].cards.append(b.deck.pop())
+                        if int(b.count_hand(players[x].cards) > 21):
                             print("Player{} -----------------".format(x + 1))
-                            print("\tHit Player{} with Card{}".format(x + 1, players[x].cards[-1][0]))
-                            print("\tCards Total: {}".format(b.count_hand(players[x].cards)))
-                            if int(b.count_hand(players[x].cards) > 21):
-                                print("Player{} -----------------".format(x + 1))
-                                print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
-                                break
-                            elif int(b.count_hand(players[x].cards) == 21):
-                                print("Player{} -----------------".format(x + 1))
-                                print("\tPlayer{} has Blackjack!!".format(x + 1))
-                                break
-                            else:
-                                pass
+                            print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
+                            break
+                        elif int(b.count_hand(players[x].cards) == 21):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tPlayer{} has Blackjack!!".format(x + 1))
+                            break
                         else:
-                            print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
-                            if int(b.count_hand(dealer.cards) > 21):
-                                print("Player{} -----------------".format(x + 1))
-                                print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
-                                break
-                            elif int(b.count_hand(players[x].cards) == 21):
-                                print("Player{} -----------------".format(x + 1))
-                                print("\tPlayer{} has Blackjack!!".format(x + 1))
-                                break
-                            else:
-                                break
-                break
+                            pass
+                    else:
+                        print("Player{} card count is {}".format(x + 1, b.count_hand(players[x].cards)))
+                        if int(b.count_hand(dealer.cards) > 21):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tPlayer{} has Bust, hand exceeds 21".format(x + 1))
+                            break
+                        elif int(b.count_hand(players[x].cards) == 21):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tPlayer{} has Blackjack!!".format(x + 1))
+                            break
+                        elif int(b.count_hand(dealer.cards) < int(b.count_hand(players[x].cards))):
+                            print("Player{} -----------------".format(x + 1))
+                            print("\tDealer has {}, Player{} Wins!!".format(b.hand_count(dealer.cards), x + 1))
+                            players[x].wallet.deposit(bet_amount * 2)
+                            break
+                        else:
+                            print("Push..")
+                            break
+                    break
+            break
 
     def dealer_hand_count(self):
         print("Dealer -----------------")
@@ -250,7 +265,7 @@ if __name__ == '__main__':
 
     # List of Player Objects
     players = []
-    dealer = []
+    dealer = Player("Dealer")
 
     #Create Deck
     b = Blackjack()
@@ -264,7 +279,16 @@ if __name__ == '__main__':
                     players.append(Player("Player" + str(x + 1)))
                     players[x].wallet = Account(100)
                 break
-            b.deal_blackjack_hand()
+            b.shuffle_deck()
+            # Place Bets
+            for x in range(0,int(player_count)):
+                b.place_bet(f"Player{x + 1}")
+            # Deal Player Cards
+            for x in range(0,int(player_count)):
+                b.deal_blackjack_hand(f"Player{x + 1}")
+            # Deal Dealer Cards
+            b.deal_blackjack_hand("Dealer")
+            b.player_hand_count()
             b.dealer_hand_count()
             b.winning_hand()
         elif intro == 'n':
