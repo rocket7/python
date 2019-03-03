@@ -108,10 +108,10 @@ class Deck():
         for x in player_obj.cards:
             if x[0] == 'Ace':
                 value = input("Please select value for Ace (1 or 11): ")
-                if value == '11' and x[3] == 11:
+                if value == '11' and x[2] == 11:
                     player_obj.hand_count += int(value)
                     break
-                elif value == '1' and x[3] == 11:
+                elif value == '1' and x[2] == 11:
                     new_card = (x[0],x[1],1)
                     player_obj.cards.pop(x)
                     player_obj.cards.append(new_card)
@@ -177,16 +177,16 @@ class Blackjack(Deck):
     # Evaluate hand
     def player_hand_count(self, player_obj):
         print("Dealer card displayed is {}".format(dealer.cards[0]))
-        print("Player{} -----------------".format(player_obj.name))
+        print("{} -----------------".format(player_obj.name))
         print("\tCards: {}".format(player_obj.cards))
         print("\tCards Total: {}".format(b.count_hand(player_obj)))
         while True:
             hit = input("Would you like hit? [y|n]")
             if hit == 'y':
                 player_obj.cards.append(b.deck.pop())
-                print("Player{} -----------------".format(player_obj.name))
-                print("\tHit Player{} with Card {}".format(player_obj.name, player_obj.cards[-1]))
-                print("Player{} card count is {}".format(player_obj.name, b.count_hand(player_obj)))
+                print("{} -----------------".format(player_obj.name))
+                print("\tHit {} with Card {}".format(player_obj.name, player_obj.cards[-1]))
+                print("{} card count is {}".format(player_obj.name, b.count_hand(player_obj)))
                 #player_obj.hand_count = b.count_hand(player_obj)
             else:
                 player_obj.hand_count = b.count_hand(player_obj)
@@ -242,10 +242,17 @@ class Blackjack(Deck):
                 players[x].losses += 1
                 players[x].total += 1
                 break
-            else:
+            elif dealer_obj.hand_count == players[x].hand_count:
                 print("{} -------------------------".format(players[x].name))
                 print("Push - Both Dealer and {} have same hand!!".format(players[x].name))
                 players[x].total += 1
+                players[x].push += 1
+                break
+            else:
+                print("{} -------------------------".format(players[x].name))
+                print("Push - Both Dealer and {} have exceeded 21!!".format(players[x].name))
+                players[x].total += 1
+                players[x].push += 1
                 break
 
 
