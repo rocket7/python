@@ -434,6 +434,9 @@ print(chr(105),chr(110),chr(116),chr(101),chr(103),chr(114),chr(105),chr(116),ch
 # notinsect
 # shape = poly
 # title = working hard
+username: huge
+password: file
+
 ######################################################################
 
 print("*" * 20)
@@ -445,9 +448,12 @@ import bz2
 
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
-
-un = 'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
-pw ='BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08'
+#MUST BE BYTES OBJECT
+un = b'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
+username = bz2.decompress(un)
+pw = b'BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08'
+password = bz2.decompress(pw)
+print(f"Username is {username} and Password is {password}")
 
 image2 = Image.open("integrity.jpg", "r")
 
