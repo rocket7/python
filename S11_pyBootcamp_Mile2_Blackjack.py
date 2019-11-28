@@ -150,6 +150,10 @@ class Blackjack(Deck):
     def shuffle_deck(self):
         b.create_deck()
 
+    def create_deck(self):
+        b.create_deck()
+
+
 
     def place_bet(self, player_obj):
         player_obj.bet_amount = input("Place Bet - Please place your bets..")
