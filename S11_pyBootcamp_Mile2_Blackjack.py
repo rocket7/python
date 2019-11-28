@@ -32,7 +32,7 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.cards = []
-        self.hand = [0][0]
+        self.hands = []
         self.wallet = None
         self.wins = 0
         self.losses = 0
@@ -40,12 +40,13 @@ class Player():
         self.total = 0
         self.bet_amount = 0
         self.hand_count = 0
+        self.hand_count_index = 0
 
 
     def bet(self, bet_amount):
         self.wallet.withdrawl(bet_amount)
 
-    def win(self, bet_amount):
+    def winnings(self, bet_amount):
         self.wallet.deposit(bet_amount)
 
 
@@ -58,13 +59,14 @@ class Account():
     def get_balance(self):
         return self.balance
 
+
     def deposit(self, amount):
         self.balance += amount
 
 
     def withdrawl(self, amount):
         if self.balance - amount < 0:
-            print("Withdrawl will result in negative balance - please select smaller amount")
+            print("Withdrawl will result in negative balance - please select smaller bet amount")
         else:
             self.balance -= amount
 
@@ -78,14 +80,15 @@ class Deck():
         self.suits = ['Spades', 'Hearts', 'Diamonds', 'Clubs']
         self.card_value = [2,3,4,5,6,7,8,9,10,10,10,10,11]
 
+
     def shuffle_deck(self):
         random.shuffle(self.deck)
 
 
-    def display_hand(self, player_name, card_hand):
+    def display_hand(self, player):
         total = 0
-        print(f"{player_name} has following hand:")
-        for x in card_hand:
+        print(f"{player.name} has following hand:")
+        for x in player.hand:
             print(f"\t {x[0]} of {x[1]}")
             total += x[2]
         print(f"For a total hand count of {total}")
@@ -103,26 +106,45 @@ class Deck():
     def print_hand(self, hand):
         print(hand)
 
-    def count_hand(self, player_obj):
-        player_obj.hand_count = 0
-        for x in player_obj.cards:
-            if x[0] == 'Ace':
+    def ace_value(self, player_obj):
+        print(f"{player_obj.name} has hand_index of {player_obj.hand_count_index}")
+        print(f"{player_obj.name} length of cards {len(player_obj.cards)}")
+
+        for x in range(player_obj.hand_count_index, len(player_obj.cards)):
+            print(f"Print value of x - {player_obj.cards[x][2]}, {player_obj.cards[x][0]}")
+            if player_obj.cards[x][0] == 'Ace':
                 value = input("Please select value for Ace (1 or 11): ")
-                if value == '11' and x[2] == 11:
-                    player_obj.hand_count += int(value)
-                    break
-                elif value == '1' and x[2] == 11:
-                    new_card = (x[0],x[1],1)
-                    player_obj.cards.pop(x)
-                    player_obj.cards.append(new_card)
+                if value == '11':
+                    #player_obj.hand_count += x[2]
+                    player_obj.hand_count_index += 1
+                elif value == '1':
+                    new_card = (player_obj.cards[x][0], player_obj.cards[x][1], 1)
+                    #print(f"pop: {x}")
+                    #print(f"remove: {player_obj.cards[x]}")
+                    #player_obj.cards.remove(x)
+                    print(f"Assign new value for Ace: {x}")
+                    player_obj.cards[x] = new_card
                     #player_obj.cards[x][2] = int(value)
                     #x[2] = int(value) # CANNOT UPDATE VALUE OF TUPLE
-                    player_obj.hand_count += int(value)
+                    #player_obj.hand_count += int(value)
+                    player_obj.hand_count_index += 1
                 else:
                     print("Error entering value for Ace")
-            else:
-                #print(f"Player {player_obj.name} has count of {player_obj.hand_count}")
-                player_obj.hand_count += x[2]
+        print(f"After: {player_obj.name} has hand_index of {player_obj.hand_count_index}")
+        print(f"After: {player_obj.name} length of cards {len(player_obj.cards)}")
+
+
+
+    def count_hand(self, player_obj):
+        player_obj.hand_count = 0
+
+        self.ace_value(player_obj)
+
+        for x in player_obj.cards:
+            #print(f"Print value of x - {x[2]}, {x[0]}")
+            player_obj.hand_count += x[2]
+            #player_obj.hand_count_index += 1
+
         return player_obj.hand_count
 
 
@@ -179,7 +201,15 @@ class Blackjack(Deck):
         print("Dealer card displayed is {}".format(dealer.cards[0]))
         print("{} -----------------".format(player_obj.name))
         print("\tCards: {}".format(player_obj.cards))
-        print("\tCards Total: {}".format(b.count_hand(player_obj)))
+        #print("\tCards Total: {}".format(b.count_hand(player_obj)))
+
+        player_obj.hand_count = b.count_hand(player_obj)
+        print(f"{player_obj.name} Card total is: {player_obj.hand_count}")
+        #------------------EVALUATE CARDS
+        if player_obj.hand_count > 21:
+            print(f"{player_obj.name} has exceeded 21")
+        elif player_obj.hand_count == 21:
+            print(f"{player_obj.name} has Blackjack!")
         while True:
             hit = input("Would you like hit? [y|n]")
             if hit == 'y':
@@ -187,7 +217,9 @@ class Blackjack(Deck):
                 print("{} -----------------".format(player_obj.name))
                 print("\tHit {} with Card {}".format(player_obj.name, player_obj.cards[-1]))
                 print("{} card count is {}".format(player_obj.name, b.count_hand(player_obj)))
-                #player_obj.hand_count = b.count_hand(player_obj)
+
+                ##NEED TO CHANGE HOW ACE IS EVALUATED
+
             else:
                 player_obj.hand_count = b.count_hand(player_obj)
                 break
@@ -210,21 +242,23 @@ class Blackjack(Deck):
     def winning_hand(self, players, dealer_obj):
         print("++++++++++++++++++++++++++++++++++++++")
         print(f"Dealer has following hand:\n {dealer_obj.cards} Dealer has a total card count of: {dealer_obj.hand_count}")
+        print("--------------------------------------")
+        print(f"{players[0].name} has following hand:\n {players[0].cards} Player has a total card count of: {players[0].hand_count}")
         for x in range(0,int(player_count)):
             if players[x].hand_count == 21 and dealer_obj.hand_count == 21:
-                print("{} -------------------------".format(players[x].name + 1))
+                print("{} -------------------------".format(players[x].name))
                 print("Push - Both Dealer and {} have Blackjack!!".format(players[x].name))
                 players[x].total += 1
                 players[x].push += 1
             elif players[x].hand_count == 21 and dealer_obj.hand_count < 21:
-                print("{} -------------------------".format(players[x].name + 1))
+                print("{} -------------------------".format(players[x].name))
                 print("{} has Blackjack and is Winner!!".format(players[x].name))
                 players[x].total += 1
                 players[x].wins += 1
                 b.winning_bet(players[x])
                 break
             elif dealer_obj.hand_count == 21 and players[x].hand_count < 21:
-                print("{} -------------------------".format(players[x].name + 1))
+                print("{} -------------------------".format(players[x].name))
                 print("{} has Blackjack and is Winner!!".format(dealer_obj.name))
                 players[x].total += 1
                 players[x].losses += 1
