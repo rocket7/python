@@ -12,6 +12,15 @@ import shutil
 import pandas
 import numpy
 
+
+def elev_color(elev):
+    if elev >= 3000:
+        return "darkred"
+    elif elev >= 1500 and elev < 3000:
+        return "red"
+    else:
+        return "lightred"
+
 #help(folium.Map)
 #Boston = latitude=42.36, longitude=-71.05)
 # loc is index name based , iloc is index # based
@@ -43,8 +52,15 @@ def create_map(mapfile, markerfile):
     #print(volcano_list)
     print(len(volcano_list))
 
+    html = """<h4>Volcano Information: </h4>
+    Name: %s
+    Elevation: %s m"""
+
     for i in volcano_list:
-        fg.add_child(folium.Marker(location=[i[2],i[3]],popup=f"Elevation: {str(i[1])}",icon=(folium.Icon(color="green")),tooltip=f"Name: {str(i[0])}"))
+        iframe = folium.IFrame(html=html % (i[0],i[1]), width=200, height=100)
+        fg.add_child(folium.CircleMarker(location=(i[2],i[3]),popup=folium.Popup(iframe),icon=(folium.Icon(color=elev_color(i[1]))),tooltip=f"Name: {str(i[0])}"))
+        #fg.add_child(folium.Marker(location=[i[2],i[3]],popup=folium.Popup(iframe),icon=  (folium.Icon(color=elev_color(i[1]))),tooltip=f"Name: {str(i[0])}"))
+        #fg.add_child(folium.Marker(location=[i[2],i[3]],popup=f"Elevation: {str(i[1])}",icon=(folium.Icon(color=elev_color(i[1]))),tooltip=f"Name: {str(i[0])}"))
         #map.add_child(folium.Marker(location=[i[2],i[3]],popup=str(i[0]),icon=(folium.Icon(color="green")),tooltip=(i[1])))
 
 
