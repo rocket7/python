@@ -94,7 +94,8 @@ class Deck():
         print(f"For a total hand count of {total}")
 
 
-    def create_deck(self):
+    def create_deck(self) -> object:  # -> object = Expected return type
+        print(f"DECK: Print Create deck: {self.deck}") #empty list
         # Create Card Deck as List of Tuples
         for suit in self.suits:
             count = 0
@@ -163,17 +164,18 @@ class Deck():
 
 # ACE CAN BE 1 or 11
 
-class Blackjack(Deck):
+class Blackjack(Deck):  #Inherites from Deck
 
     def __init__(self):
         Deck.__init__(self) #NO COLON AND NO INDENT FOR PASS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        print(f"INIT: Print Blackjack Class deck: {self.deck}") #empty list
 
+    #def shuffle_deck(self):
+    #    #overrides Deck method
+    #    b.create_deck()
 
-    def shuffle_deck(self):
-        b.create_deck()
-
-    def create_deck(self):
-        b.create_deck()
+    #def create_deck(self):
+    #    Deck.create_deck()
 
 
 
@@ -312,8 +314,8 @@ if __name__ == '__main__':
                 for x in range(0,int(player_count)):
                     players.append(Player("Player" + str(x + 1)))
                     players[x].wallet = Account(100)
-
                 break
+            b.create_deck()
             b.shuffle_deck()
             # Place Bets
             for x in range(0,int(player_count)):

@@ -749,11 +749,23 @@ def test():
 #####################################################################
 
 
+import cv2
+import matplotlib
+import numpy as np
+
+#640x480 - cave.jpg
+
+#Load image
+def challenge11(imgfile,height, width):
+    image = cv2.imread(imgfile, 1)
+    type(image) #numpy array
+    pprint(np.)
 
 
 
 
 
 if __name__ == '__main__':
-    test()
+    #test()
     #challenge10()
+    challenge11('/home/adam/Downloads/cave.jpg', 480, 640)
